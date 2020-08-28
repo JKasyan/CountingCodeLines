@@ -1,24 +1,32 @@
 package test.task;
 
-import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.SortedSet;
+import java.util.TreeSet;
 
-public class FileOrDirectory {
+public class FileOrDirectory implements Comparable<FileOrDirectory> {
 
-    private final File path;
-    private List<FileOrDirectory> children = new ArrayList<>();
+    private final String name;
+    private SortedSet<FileOrDirectory> children = new TreeSet<>();
     private long rowsNumber;
 
-    public FileOrDirectory(File path) {
-        this.path = path;
+    public FileOrDirectory(String name) {
+        this(name, 0);
     }
 
-    public List<FileOrDirectory> getChildren() {
+    public FileOrDirectory(String name, long rowsNumber) {
+        this.name = name;
+        this.rowsNumber = rowsNumber;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public SortedSet<FileOrDirectory> getChildren() {
         return children;
     }
 
-    public void setChildren(List<FileOrDirectory> children) {
+    public void setChildren(SortedSet<FileOrDirectory> children) {
         this.children = children;
     }
 
@@ -36,6 +44,11 @@ public class FileOrDirectory {
 
     @Override
     public String toString() {
-        return path.getName() + ":" + rowsNumber;
+        return this.name + ":" + rowsNumber;
+    }
+
+    @Override
+    public int compareTo(FileOrDirectory that) {
+        return that.name.compareTo(this.name);
     }
 }

@@ -6,6 +6,7 @@ import java.util.concurrent.RecursiveTask;
 public class BuildDirTreeTask extends RecursiveTask<FileOrDirectory> {
 
     private final File path;
+    private RowsNumberCounter counter = new RowsNumberCounter();
 
     public BuildDirTreeTask(File path) {
         this.path = path;
@@ -13,7 +14,7 @@ public class BuildDirTreeTask extends RecursiveTask<FileOrDirectory> {
 
     @Override
     protected FileOrDirectory compute() {
-        FileOrDirectory pd = new FileOrDirectory(path);
+        FileOrDirectory pd = new FileOrDirectory(path.getName());
         final File[] files = path.listFiles();
         if (files == null)
             return null;
@@ -38,7 +39,7 @@ public class BuildDirTreeTask extends RecursiveTask<FileOrDirectory> {
     }
 
     private void handleFile(File file, FileOrDirectory pd) {
-        FileOrDirectory d = new FileOrDirectory(file);
+        FileOrDirectory d = new FileOrDirectory(file.getName());
         d.setRowsNumber(Util.countNumberRowsInFile(file.getPath()));
         pd.getChildren().add(d);
         pd.addRows(d.getRowsNumber());
